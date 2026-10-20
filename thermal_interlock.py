@@ -154,29 +154,6 @@ class RuntimePhysicsSimulator:
         """
         start_time = time.perf_counter()
 
-        # If already tripped, do not proceed with normal simulation — return current state
-        if self._interlock_state == InterlockState.TRIPPED:
-            elapsed_ms = round((time.perf_counter() - start_time) * 1000.0, 3)
-            return ThermalInterlockTelemetry(
-                input_length=input_length,
-                ambient_temp_c=self.constants.ambient_temp_k - 273.15,
-                core_temp_c=0.0,
-                core_temp_k=0.0,
-                thermal_gradient_k_um=0.0,
-                flow_velocity_m_s=0.0,
-                reynolds_number=0.0,
-                flow_regime=FlowRegime.LAMINAR,
-                pressure_drop_kpa=0.0,
-                total_pressure_kpa=self.constants.base_pressure_kpa,
-                rearrangement_probability=0.0,
-                interlock_state=InterlockState.TRIPPED,
-                is_safe=False,
-                trigger_records=list(self._trip_history),
-                assumed_parameters=self._get_assumed_parameters(),
-                inferred_parameters={"status": "HALTED_DUE_TO_PRIOR_INTERLOCK_TRIP"},
-                execution_time_ms=elapsed_ms,
-            )
-
         # 1. Thermal Calculations
         # Input-derived thermal dissipation scaling dynamically with sequence length and entropy:
         length_term = min(input_length, 4500) / 40.0
@@ -272,8 +249,8 @@ class RuntimePhysicsSimulator:
                 description="Kinetic structural rearrangement probability exceeded safety envelope threshold.",
             ))
 
-        is_safe = len(new_triggers) == 0
-        if not is_safe:
+        is_safe = (len(new_triggers) == 0) and (self._interlock_state != InterlockState.TRIPPED)
+        if len(new_triggers) > 0:
             self._interlock_state = InterlockState.TRIPPED
             self._trip_history.extend(new_triggers)
 

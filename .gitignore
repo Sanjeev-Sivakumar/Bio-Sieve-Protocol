@@ -24,22 +24,16 @@ build_*.py
 generate_*.py
 check_scroll_container.py
 concat_*.txt
-test_playwright_*.py
-test_smooth_scroll.py
-test_subs.py
-test_audio.*
-test_edge.*
-test_text.txt
-test_prabhat.*
-test_ravi.*
-test_onecore.ps1
+test_*.py
+update_*.py
+test_*.ps1
 synthesize_*.ps1
 verify_layout.py
 dump_voices.py
 list_edge_voices.py
 subtitle.srt
-test_app_flow*.py
-test_ml_buttons.py
+final_verified_v2/
+sample_clips/
 
 # Transient Screenshots (allow Slide images and UI assets)
 *.png

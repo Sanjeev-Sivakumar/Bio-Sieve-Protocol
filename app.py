@@ -1837,17 +1837,18 @@ def render_page_fuzzy_analysis():
                 "Tripwire Gate Threshold", min_value=0.50, max_value=0.99, value=0.85, step=0.01
             )
 
-            if st.session_state.get("uploaded_filename"):
-                render_html(f"""
-                <div style="background: #EAF8FB; border: 1.5px solid #168FA1; border-radius: 10px; padding: 10px 14px; margin-bottom: 12px; font-size: 0.86rem; color: #102D4D;">
-                    <strong>Active Specimen:</strong> <code>{st.session_state.uploaded_filename}</code> ({len(st.session_state.sample_fasta):,} bp)
-                    <div style="font-size: 0.78rem; color: #536D82; margin-top: 2px;">Synchronized from Ingestion Gateway across all screening modules.</div>
-                </div>
-                """)
+            active_name = st.session_state.get("uploaded_filename") or "Benign_Control_Actin1.fasta"
+            active_seq = st.session_state.get("sample_fasta") or SAMPLE_BENIGN_SEQUENCE
+            render_html(f"""
+            <div style="background: #EAF8FB; border: 1.5px solid #168FA1; border-radius: 10px; padding: 10px 14px; margin-bottom: 12px; font-size: 0.86rem; color: #102D4D;">
+                <strong>Active Specimen:</strong> <code>{active_name}</code> ({len(active_seq):,} bp)
+                <div style="font-size: 0.78rem; color: #536D82; margin-top: 2px;">Synchronized from Ingestion Gateway across all screening modules.</div>
+            </div>
+            """)
 
             fuzzy_input_text = st.text_area(
                 "FASTA Sequence Input",
-                value=st.session_state.get("sample_fasta", ""),
+                value=st.session_state.get("sample_fasta") or SAMPLE_BENIGN_SEQUENCE,
                 height=150,
                 key="fuzzy_text_area",
             )
