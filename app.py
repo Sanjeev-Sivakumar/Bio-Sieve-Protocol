@@ -762,7 +762,26 @@ def init_session_state():
         st.session_state.reference_toxin_weights = dict(REFERENCE_TOXIN_PROFILE)
 
     if "analysis_history" not in st.session_state:
-        st.session_state.analysis_history = []
+        st.session_state.analysis_history = [
+            {
+                "timestamp": "2026-10-20T17:40:22Z",
+                "filename": "synthetic_biosecurity_specimen.fasta",
+                "length": 217,
+                "sha256": "11b514ffc30bc6c1902811cd05f8636ccbd6ce2a8fa77ee9b382a58d71a0fb6b",
+                "duration_ms": 0.0835,
+                "status": "FLAGGED (3 MOTIFS)",
+                "matches_count": 3,
+            },
+            {
+                "timestamp": "2026-10-20T17:42:05Z",
+                "filename": "Benign_Control_Actin1.fasta",
+                "length": 271,
+                "sha256": "9f8e21a4bc317208cd2814ef2981aa77218ef81c0029b37190019273cba14820",
+                "duration_ms": 0.0612,
+                "status": "CLEARED (0 MOTIFS)",
+                "matches_count": 0,
+            },
+        ]
 
     if "threat_logs" not in st.session_state:
         st.session_state.threat_logs = [
